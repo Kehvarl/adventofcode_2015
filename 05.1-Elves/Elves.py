@@ -28,13 +28,33 @@ def reject(source):
     return True
 
 
+def repeating(source):
+    for index in range(2, len(source)):
+        if source[index] == source[index - 2]:
+            return True
+    return False
+
+
+def repeated_pair(source):
+    for index in range(1, len(source)):
+        pair = source[index - 1] + source[index]
+        if source.find(pair, index+1) > 0:
+            return True
+
+    return False
+
+
 input_text = open("input.txt", "r").read().strip().split("\n")
 nice = []
 naughty = []
 
 for word in input_text:
-    is_nice = (double_letter(word) and vowels(word) and reject(word))
+    is_nice = (repeating(word) and repeated_pair(word))
     print(word, is_nice)
+
+    print(repeating(word))
+    print(repeated_pair(word))
+
     if is_nice:
         nice.append(word)
     else:
