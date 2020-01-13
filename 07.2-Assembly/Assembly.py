@@ -47,12 +47,10 @@ def parse(command):
             wires[output] = wires[x] >> int(amount)
             return True
     elif tokens[0] in wires:
-        if output not in wires:
-            wires[output] = wires[tokens[0]]
+        wires[output] = wires[tokens[0]]
         return True
     elif tokens[0].isnumeric():
-        if output not in wires:
-            wires[output] = int(tokens[0])
+        wires[output] = int(tokens[0])
         return True
 
     return False
@@ -62,23 +60,6 @@ wires = {}
 
 input_file = open("input.txt", "r").read().split("\n")
 
-processing = deque()
-
-for line in input_file:
-    processing.append(line)
-
-
-while processing:
-    command = processing.popleft()
-    if not parse(command):
-        processing.append(command)
-
-pprint(wires)
-print()
-print(wires["a"])
-new_b = wires["a"]
-
-wires = {"b": new_b}
 processing = deque()
 
 for line in input_file:
