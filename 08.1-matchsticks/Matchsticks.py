@@ -18,7 +18,7 @@ def get_length(input_line):
     return length
 
 
-input_file = open("input.txt", "r").read().split("\n")
+input_file = open("test.txt", "r").read().split("\n")
 
 total_length = 0
 for line in input_file:
