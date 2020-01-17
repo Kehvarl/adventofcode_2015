@@ -70,5 +70,10 @@ def test_password(input_string):
 test_string = "cqjxjnds"
 while not test_password(test_string):
     test_string = increment_string(test_string)
+print("part 1:", test_string)
 
-print(test_string)
+
+test_string = increment_string(test_string)
+while not test_password(test_string):
+    test_string = increment_string(test_string)
+print("part 2:", test_string)
