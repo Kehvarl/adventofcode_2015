@@ -36,5 +36,3 @@ for line in input_file:
     total += sum_nums(data, ["red"])
 
 print(total)
-
-
