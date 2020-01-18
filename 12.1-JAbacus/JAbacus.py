@@ -1,5 +1,4 @@
 import json
-from pprint import pprint
 
 
 def sum_nums(input_node):
@@ -7,7 +6,7 @@ def sum_nums(input_node):
 
     if isinstance(input_node, dict):
         for k, v in input_node.items():
-            if k == "red" or v=="red":
+            if k == "red" or v == "red":
                 return 0
             if isinstance(v, dict) or isinstance(v, list):
                 sum_total += sum_nums(v)
@@ -37,5 +36,3 @@ for line in input_file:
 
 
 print(total)
-
-
