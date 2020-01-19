@@ -1,5 +1,3 @@
-from pprint import pprint
-
 
 def parseline(input_line):
     tokens = input_line.strip(".").split(" ")
@@ -17,14 +15,14 @@ def get_permutations(lst):
         return []
     if len(lst) == 1:
         return [lst]
-    l = []
+    permutations = []
     for i in range(len(lst)):
         m = lst[i]
         rest = lst[:i] + lst[i + 1:]
 
         for p in get_permutations(rest):
-            l.append([m] + p)
-    return l
+            permutations.append([m] + p)
+    return permutations
 
 
 graph = {}
@@ -50,11 +48,10 @@ for arrangement in seating_arrangements:
     total = 0
     for index in range(len(arrangement) - 1):
         total += graph[arrangement[index]][arrangement[index + 1]]
-        total += graph[arrangement[index + 1]][arrangement[index ]]
+        total += graph[arrangement[index + 1]][arrangement[index]]
     total += graph[arrangement[-1]][arrangement[0]]
     total += graph[arrangement[0]][arrangement[-1]]
     print(arrangement, total)
     totals.append(total)
 
 print(max(totals))
-

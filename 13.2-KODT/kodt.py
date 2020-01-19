@@ -1,5 +1,3 @@
-from pprint import pprint
-
 
 def parseline(input_line):
     tokens = input_line.strip(".").split(" ")
@@ -17,24 +15,23 @@ def get_permutations(lst):
         return []
     if len(lst) == 1:
         return [lst]
-    l = []
+    permutations = []
     for i in range(len(lst)):
         m = lst[i]
         rest = lst[:i] + lst[i + 1:]
 
         for p in get_permutations(rest):
-            l.append([m] + p)
-    return l
+            permutations.append([m] + p)
+    return permutations
 
 
 def get_happiness(people, a, b):
     happiness = 0
     if a == "Me" or b == "Me":
-        return  0
+        return 0
     happiness += people[a][b]
     happiness += people[b][a]
     return happiness
-
 
 
 graph = {}
@@ -68,4 +65,3 @@ for arrangement in seating_arrangements:
     totals.append(total)
 
 print(max(totals))
-
