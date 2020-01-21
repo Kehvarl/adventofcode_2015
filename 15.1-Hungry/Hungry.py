@@ -1,6 +1,6 @@
 
 def parse_line(input_line):
-    name, rest = input_line.split(":")
+    parsed_name, rest = input_line.split(":")
     rest = rest.split(",")
     properties = {}
     for token in rest:
@@ -8,7 +8,7 @@ def parse_line(input_line):
         if p not in properties:
             properties[p] = int(v)
 
-    return name, properties
+    return parsed_name, properties
 
 
 def sums(length, total_sum):
@@ -20,13 +20,13 @@ def sums(length, total_sum):
                 yield (value,) + permutation
 
 
-def calculate(ingredient, measure):
-    capacity = ingredient['capacity'] * measure
-    durability = ingredient['durability'] * measure
-    flavor = ingredient['flavor'] * measure
-    texture = ingredient['texture'] * measure
+def calculate(ingredient_to_calculate, measure):
+    calc_capacity = ingredient_to_calculate['capacity'] * measure
+    calc_durability = ingredient_to_calculate['durability'] * measure
+    calc_flavor = ingredient_to_calculate['flavor'] * measure
+    calc_texture = ingredient_to_calculate['texture'] * measure
 
-    return capacity, durability, flavor, texture
+    return calc_capacity, calc_durability, calc_flavor, calc_texture
 
 
 input_file = open("input.txt", "r").read().split("\n")
@@ -34,8 +34,8 @@ input_file = open("input.txt", "r").read().split("\n")
 ingredients = {}
 
 for line in input_file:
-    pname, pprops = parse_line(line)
-    ingredients[pname] = pprops
+    p_name, p_props = parse_line(line)
+    ingredients[p_name] = p_props
 
 print(ingredients)
 
