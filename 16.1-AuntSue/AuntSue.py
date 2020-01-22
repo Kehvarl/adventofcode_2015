@@ -1,6 +1,4 @@
 
-
-
 input_file = open("input.txt", "r").read().split("\n")
 
 sues = [None] * 501
@@ -9,26 +7,26 @@ for line in input_file:
     # Sue 1: cars: 9, akitas: 3, goldfish: 0
     aunt, rest = line.split(": ", maxsplit=1)
     aunt = aunt.split(" ")
-    number = int(aunt[1])
+    aunt_num = int(aunt[1])
     analysis = {}
     for compound in rest.split(", "):
         result, amount = compound.split(": ")
         analysis[result] = int(amount)
 
-    sues[number] = analysis
+    sues[aunt_num] = analysis
 
 print(sues)
 
 gifter = {"children": 3,
-            "cats": 7,
-            "samoyeds": 2,
-            "pomeranians": 3,
-            "akitas": 0,
-            "vizslas": 0,
-            "goldfish": 5,
-            "trees": 3,
-            "cars": 2,
-            "perfumes": 1}
+          "cats": 7,
+          "samoyeds": 2,
+          "pomeranians": 3,
+          "akitas": 0,
+          "vizslas": 0,
+          "goldfish": 5,
+          "trees": 3,
+          "cars": 2,
+          "perfumes": 1}
 
 possible_sues = []
 for sue in sues:
