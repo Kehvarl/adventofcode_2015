@@ -7,13 +7,13 @@ for line in input_file:
     # Sue 1: cars: 9, akitas: 3, goldfish: 0
     aunt, rest = line.split(": ", maxsplit=1)
     aunt = aunt.split(" ")
-    aunt_num = int(aunt[1])
+    aunt_num = aunt[1]
     analysis = {}
     for compound in rest.split(", "):
         result, amount = compound.split(": ")
         analysis[result] = int(amount)
 
-    sues[aunt_num] = analysis
+    sues[int(aunt_num)] = analysis
 
 print(sues)
 
