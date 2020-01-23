@@ -23,6 +23,20 @@ solutions = [bottles for i in range(len(usable_containers), 0, -1)
              for bottles in combinations(usable_containers, i)
              if sum(bottles) == store_amount]
 
+least_bottles = len(solutions[0])
+for solution in solutions:
+    if len(solution) < least_bottles:
+        least_bottles = len(solution)
+
+short_solutions = [bottles for i in range(len(usable_containers), 0, -1)
+                   for bottles in combinations(usable_containers, i)
+                   if sum(bottles) == store_amount and len(bottles) == least_bottles]
 pprint(solutions)
 
 print(len(solutions))
+
+print(least_bottles)
+
+pprint(short_solutions)
+
+print(len(short_solutions))
