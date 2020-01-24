@@ -7,7 +7,7 @@ def apply_rules(my_x, my_y, my_grid):
         return 1
 
     status = my_grid[y][x]
-    neighbors = [(-1, -1), (0, -1),(1, -1),
+    neighbors = [(-1, -1), (0, -1), (1, -1),
                  (-1, 0), (1, 0),
                  (-1, 1), (0, 1), (1, 1)]
 
