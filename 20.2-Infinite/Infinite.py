@@ -13,9 +13,7 @@ target = 34000000
 # target = 3400000
 value = 0
 for h in range(1, target):
-    houses = list(reversed(sorted(list(factors(h)))))
-    houses = houses[:min(len(houses), 50)]
-
-    if sum(houses) * 11 >= target:
+    houses = factors(h)
+    if sum(d for d in houses if h/d <= 50) * 11 >= target:
         print(h)
         break
