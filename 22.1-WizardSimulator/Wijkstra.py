@@ -53,6 +53,7 @@ def can_cast(spell, state):
 def cast(spell, state):
     if spell[5] > 0:
         state["effects"].add(spell)
+        state["player_armor"] += spell[4]
     else:
         state["boss_hp"] -= spell[2]
         state["player_hp"] += spell[3]
