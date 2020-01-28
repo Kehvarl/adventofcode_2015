@@ -1,5 +1,6 @@
 from itertools import permutations
 from collections import deque
+from random import choice
 
 
 class Character:
@@ -57,6 +58,15 @@ class Character:
 
 
 def Wiz_AI(wiz, other):
+    spell = choice(spells)
+    while wiz.spell_in_use(spell[0]) or spell[1] >= wiz.mana:
+        spell = choice(spells)
+
+    return spell
+
+
+def NoAI(other, wiz):
+
     if other.hp <= 4:
         return spells[0] # Magic Missile
     elif wiz.hp <= (other.base_dmg - wiz.mod_armor):
@@ -81,14 +91,17 @@ spells = [
     ("Recharge", 229, 0, 0, 7, 5, 101),
 ]
 
+while False:
+    spell_chains = permutations([x % 5 for x in range(25)], 15)
 
-spell_chains = permutations([x % 5 for x in range(25)], 25)
+    lowest_spend = 999999
+    lowest_chain = None
+
+    for chain in spell_chains:
+        working_chain = deque(chain)
 
 lowest_spend = 999999
-lowest_chain = None
-
-for chain in spell_chains:
-    working_chain = deque(chain)
+for _ in range(1000000):
 
     # Boss = 55 HP; 5 DMG
     # Player = 50 HP; 500 MANA
@@ -97,17 +110,16 @@ for chain in spell_chains:
 
     spent_mana = 0
 
-    while Player.hp > 0 and Boss.hp > 0:
-        spell = spells[working_chain.popleft()]
+    while Player.hp > 0 and Player.mana > 0 and Boss.hp > 0:
+        spell = Wiz_AI(Player, Boss)
         spent_mana += spell[1]
         Player.cast(Boss, spell)
         if Boss.hp > 0:
             Boss.attack(Player)
 
-    if Player.hp > 0:
+    if Player.hp > 0 and Player.mana > 0:
         if spent_mana < lowest_spend:
             lowest_spend = spent_mana
-            lowest_chain = chain
+            # lowest_chain = chain
 
-print(lowest_spend, lowest_chain)
-
+print(lowest_spend)  # , lowest_chain)
