@@ -1,27 +1,3 @@
-# Name, Mana_Cost, Damage, Heal, Armor, Duration, Mana_Gain
-spells = [
-    ("Magic Missile", 53, 4, 0, 0, 0, 0),
-    ("Drain", 73, 2, 2, 0, 0, 0),
-    ("Shield", 113, 0, 0, 7, 6, 0),
-    ("Poison", 173, 3, 0, 0, 6, 0),
-    ("Recharge", 229, 0, 0, 0, 5, 101),
-]
-
-# Boss = 55 HP; 5 DMG
-# Player = 50 HP; 500 MANA
-
-initial_state = {
-    "effects": set(),
-    "player_hp": 50,
-    "player_mana": 500,
-    "player_armor": 0,
-    "boss_hp": 55,
-    "boss_dmg": 8,
-    "mana_spent": 0,
-    "spells": []
-}
-
-
 def process_effects(state):
     # Name, Mana_Cost, Damage, Heal, Armor, Duration, Mana_Gain
     output = set()
@@ -83,7 +59,7 @@ def bfs(state):
     state = process_effects(state)
     for spell in spells:
         if can_cast(spell, state):
-            tmp = boss_hit(cast(spell, state.copy()))
+            tmp = boss_hit(process_effects(cast(spell, state.copy())))
             if not game_over(tmp):
                 bfs(tmp)
             elif tmp["boss_hp"] <= 0:
@@ -93,6 +69,29 @@ def bfs(state):
                     lowest_spend = tmp["mana_spent"]
                     print(tmp["mana_spent"])
 
+
+# Name, Mana_Cost, Damage, Heal, Armor, Duration, Mana_Gain
+spells = [
+    ("Magic Missile", 53, 4, 0, 0, 0, 0),
+    ("Drain", 73, 2, 2, 0, 0, 0),
+    ("Shield", 113, 0, 0, 7, 6, 0),
+    ("Poison", 173, 3, 0, 0, 6, 0),
+    ("Recharge", 229, 0, 0, 0, 5, 101),
+]
+
+# Boss = 55 HP; 8 DMG
+# Player = 50 HP; 500 MANA
+
+initial_state = {
+    "effects": set(),
+    "player_hp": 50,
+    "player_mana": 500,
+    "player_armor": 0,
+    "boss_hp": 55,
+    "boss_dmg": 8,
+    "mana_spent": 0,
+    "spells": []
+}
 
 lowest_spend = 999999
 bfs(initial_state)
