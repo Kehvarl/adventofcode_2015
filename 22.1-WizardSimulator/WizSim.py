@@ -1,3 +1,7 @@
+from itertools import permutations
+from collections import deque
+
+
 class Character:
     def __init__(self, hp, base_damage, base_armor, mana):
         self.max_hp = hp
@@ -52,6 +56,22 @@ class Character:
             self.hp += spell[3]
 
 
+def Wiz_AI(wiz, other):
+    if other.hp <= 4:
+        return spells[0] # Magic Missile
+    elif wiz.hp <= (other.base_dmg - wiz.mod_armor):
+        if not wiz.spell_in_use(spells[2][0]): # Not shielding
+            return spells[3] # Shield!!
+        else:
+            return spells[1] # Drain, I guess
+    elif wiz.mana <= 113:
+        return spells[4] # Get More Mana
+    elif not wiz.spell_in_use(spells[3][0]): #Not Poisoned?
+        return spells[3]
+    return spells[0]  # Magic Missile
+
+
+
 # Name, Mana_Cost, Damage, Heal, Armor, Duration, Mana_Gain
 spells = [
     ("Magic Missile", 53, 4, 0, 0, 0, 0),
@@ -61,4 +81,33 @@ spells = [
     ("Recharge", 229, 0, 0, 7, 5, 101),
 ]
 
+
+spell_chains = permutations([x % 5 for x in range(25)], 25)
+
+lowest_spend = 999999
+lowest_chain = None
+
+for chain in spell_chains:
+    working_chain = deque(chain)
+
+    # Boss = 55 HP; 5 DMG
+    # Player = 50 HP; 500 MANA
+    Boss = Character(55, 5, 0, 0)
+    Player = Character(50, 0, 0, 500)
+
+    spent_mana = 0
+
+    while Player.hp > 0 and Boss.hp > 0:
+        spell = spells[working_chain.popleft()]
+        spent_mana += spell[1]
+        Player.cast(Boss, spell)
+        if Boss.hp > 0:
+            Boss.attack(Player)
+
+    if Player.hp > 0:
+        if spent_mana < lowest_spend:
+            lowest_spend = spent_mana
+            lowest_chain = chain
+
+print(lowest_spend, lowest_chain)
 
