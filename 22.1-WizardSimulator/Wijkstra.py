@@ -89,10 +89,11 @@ bfs = deque([initial_state])
 
 while bfs:
     working_state = bfs.popleft()
+    working_state["player_hp"] -= 1
     working_state = process_effects(working_state)
 
     for castable in spells:
-        if can_cast(castable, working_state):
+        if can_cast(castable, working_state) and working_state["player_hp"] > 0:
             tmp_state = boss_hit(process_effects(cast(castable, copy.deepcopy(working_state))))
             if not game_over(tmp_state):
                 bfs.append(tmp_state)
