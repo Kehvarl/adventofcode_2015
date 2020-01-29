@@ -1,4 +1,5 @@
 from collections import deque
+import copy
 
 
 def process_effects(state):
@@ -89,9 +90,10 @@ bfs = deque([initial_state])
 while bfs:
     working_state = bfs.popleft()
     working_state = process_effects(working_state)
+
     for castable in spells:
         if can_cast(castable, working_state):
-            tmp_state = boss_hit(process_effects(cast(castable, working_state.copy())))
+            tmp_state = boss_hit(process_effects(cast(castable, copy.deepcopy(working_state))))
             if not game_over(tmp_state):
                 bfs.append(tmp_state)
             elif tmp_state["boss_hp"] <= 0:
