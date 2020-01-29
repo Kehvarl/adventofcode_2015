@@ -1,3 +1,6 @@
+from collections import deque
+
+
 def process_effects(state):
     # Name, Mana_Cost, Damage, Heal, Armor, Duration, Mana_Gain
     output = set()
@@ -18,15 +21,17 @@ def process_effects(state):
 
 
 def can_cast(spell, state):
+    # Name, Mana_Cost, Damage, Heal, Armor, Duration, Mana_Gain
+    if spell[1] > state["player_mana"]:
+        return False
     for effect in state["effects"]:
         if effect[0] == spell[0]:
             return False
-    if spell[1] > state["player_mana"]:
-        return False
     return True
 
 
 def cast(spell, state):
+    # Name, Mana_Cost, Damage, Heal, Armor, Duration, Mana_Gain
     if spell[5] > 0:
         state["effects"].add(spell)
         state["player_armor"] += spell[4]
@@ -44,30 +49,15 @@ def boss_hit(state):
     if state["boss_hp"] <= 0:
         return state
     dmg = state["boss_dmg"] - state["player_armor"]
-    state["player_hp"] -= dmg
+    state["player_hp"] -= max(0, dmg)
     return state
 
 
 def game_over(state):
-    return not (state["player_hp"] > 0 and
-                state["player_mana"] > 0 and
-                state["boss_hp"] > 0 and
-                state["mana_spent"] <= lowest_spend)
-
-
-def bfs(state):
-    state = process_effects(state)
-    for spell in spells:
-        if can_cast(spell, state):
-            tmp = boss_hit(process_effects(cast(spell, state.copy())))
-            if not game_over(tmp):
-                bfs(tmp)
-            elif tmp["boss_hp"] <= 0:
-                print(tmp["mana_spent"], tmp["player_hp"], tmp["player_mana"], tmp["boss_hp"])
-                global lowest_spend
-                if tmp["mana_spent"] <= lowest_spend:
-                    lowest_spend = tmp["mana_spent"]
-                    print(tmp["mana_spent"])
+    return (state["player_hp"] <= 0 or
+            state["player_mana"] <= 0 or
+            state["boss_hp"] <= 0 or
+            state["mana_spent"] >= lowest_spend)
 
 
 # Name, Mana_Cost, Damage, Heal, Armor, Duration, Mana_Gain
@@ -94,6 +84,18 @@ initial_state = {
 }
 
 lowest_spend = 999999
-bfs(initial_state)
+bfs = deque([initial_state])
+
+while bfs:
+    working_state = bfs.popleft()
+    working_state = process_effects(working_state)
+    for castable in spells:
+        if can_cast(castable, working_state):
+            tmp_state = boss_hit(process_effects(cast(castable, working_state.copy())))
+            if not game_over(tmp_state):
+                bfs.append(tmp_state)
+            elif tmp_state["boss_hp"] <= 0:
+                if tmp_state["mana_spent"] <= lowest_spend:
+                    lowest_spend = tmp_state["mana_spent"]
 
 print(lowest_spend)
