@@ -1,6 +1,9 @@
 class TuringLock:
-    def __init__(self, code):
-        self.registers = {"a": 0, "b": 0}
+    def __init__(self, code, registers=None):
+        if registers is None:
+            self.registers = {"a": 0, "b": 0}
+        else:
+            self.registers = registers
         self.program_counter = 0
         self.assembly = code
 
@@ -47,7 +50,7 @@ class TuringLock:
 
 input_file = open("input.txt", "r").read().split("\n")
 
-computer = TuringLock(input_file)
+computer = TuringLock(input_file, registers={"a":1, "b":0})
 
 while computer.program_counter < len(computer.assembly):
     computer.step()
