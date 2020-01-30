@@ -2,7 +2,7 @@ import operator
 from itertools import combinations
 from functools import reduce
 
-test = [1, 2, 3, 4, 5, 7, 8, 9, 10, 11]
+# input_file = [1, 2, 3, 4, 5, 7, 8, 9, 10, 11]
 
 input_file = [int(x) for x in open("input.txt", "r").read().split("\n")]
 
@@ -56,7 +56,7 @@ for group in allowed_groups:
 shortest_groups = list(filter(lambda grp: (len(grp) == shortest), allowed_groups))
 
 QE = []
-if len(shortest_groups) > 1:
+if len(shortest_groups) > 0:
     for g in shortest_groups:
         QE.append(reduce(operator.mul, g))
 
