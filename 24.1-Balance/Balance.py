@@ -6,7 +6,7 @@ from functools import reduce
 
 input_file = [int(x) for x in open("input.txt", "r").read().split("\n")]
 
-set_size = sum(input_file) // 3
+set_size = sum(input_file) // 4
 
 possible_groups = [set(seq) for i in range(len(input_file), 0, -1)
                    for seq in combinations(input_file, i)
@@ -19,7 +19,7 @@ for group in possible_groups:
     if len(group) < shortest_group:
         shortest_group = len(group)
 
-first_groups = filter(lambda grp: (len(grp) == shortest_group), possible_groups)
+first_groups = list(filter(lambda grp: (len(grp) == shortest_group), possible_groups))
 allowed_groups = {}
 while False:
     for first in first_groups:
@@ -56,7 +56,7 @@ while False:
     shortest_groups = list(filter(lambda grp: (len(grp) == shortest), allowed_groups))
 
 QE = []
-if len(list(first_groups)) > 0:
+if len(first_groups) > 0:
     for g in first_groups:
         QE.append(reduce(operator.mul, g))
 
